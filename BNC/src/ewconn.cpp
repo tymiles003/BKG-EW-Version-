@@ -289,9 +289,9 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         int second = (int) Seconds;
         int milli  =  (int) ((Seconds - second) * 1000);
         QDateTime timeofobs;
+        timeofobs.setTimeSpec(Qt::TimeSpec::UTC); // THIS ONE IS IMPORTANT
         timeofobs.setTime(QTime(Hour,Minute,second,milli));
         timeofobs.setDate(QDate(Year,Month,Day));
-
         double starttime = (double) timeofobs.toTime_t();
 
         /* calculate and enter start-timestamp for packet */
