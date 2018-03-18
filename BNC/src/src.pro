@@ -10,8 +10,6 @@ HEADERS += app.h
 
 SOURCES += bncmain.cpp app.cpp
 
-DEFINES += USE_EW
-
 QMAKE_CXXFLAGS += -m64 -Dlinux -D__i386 -D_LINUX -D_INTEL -D_USE_SCHED  -D_USE_PTHREADS -D_USE_TERMIOS -Wno-write-strings
 QMAKE_CFLAGS += -m64 -Dlinux -D__i386 -D_LINUX -D_INTEL -D_USE_SCHED  -D_USE_PTHREADS -D_USE_TERMIOS -Wno-write-strings
 
