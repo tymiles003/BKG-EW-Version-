@@ -644,7 +644,7 @@ bncWindow::bncWindow() {
   }
   // Earthworm Configuration
   // ---------------------------
-  _earthwormConfig = new QLineEdit("bnc2ew.d");
+  _earthwormConfig = new QLineEdit();
   _earthwormRun    = new QCheckBox("Check for enableing.");
 
   // Canvas with Editable Fields
@@ -1294,6 +1294,8 @@ bncWindow::bncWindow() {
   ewLayout->setRowStretch(4, 999);
 
   ewconfiggroup->setLayout(ewLayout);
+  connect(_earthwormRun,SIGNAL(toggled(bool)),BNC_CORE,SLOT(slotConnectEW(bool)));
+  connect(_earthwormConfig,SIGNAL(textChanged(QString)),BNC_CORE,SLOT(slotSetEWConfig(QString)));
 
 
   // Main Layout
@@ -1597,6 +1599,8 @@ bncWindow::~bncWindow() {
   delete _sp3CompFileChooser;
   delete _sp3CompExclude;
   delete _sp3CompLogLineEdit;
+  delete _earthwormConfig;
+  delete _earthwormRun;
   //delete _canvas;
 }
 
@@ -2098,6 +2102,7 @@ void bncWindow::slotGetThreadsFinished() {
 ////////////////////////////////////////////////////////////////////////////
 void bncWindow::slotStart() {
   saveOptions();
+  BNC_CORE->slotSetEWConfig(_earthwormConfig->text());
   if      ( _pppWidgets._dataSource->currentText() == "RINEX Files") {
     _runningPPP = true;
     enableStartStop();

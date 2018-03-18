@@ -86,6 +86,8 @@ friend class bncSettings;
   void slotNewCodeBiases(QList<t_satCodeBias>);
   void slotNewPhaseBiases(QList<t_satPhaseBias>);
   void slotNewTec(t_vTec);
+  void slotConnectEW(bool status);
+  void slotSetEWConfig(QString config);
   void slotQuit();
 
  signals:
@@ -159,6 +161,7 @@ friend class bncSettings;
   bncEphUser             _ephUser;
   qint64                 _pid;
   EWconn*                _earthworm;
+  QString                _ewConfig;
 };
 
 #define BNC_CORE (t_bncCore::instance())

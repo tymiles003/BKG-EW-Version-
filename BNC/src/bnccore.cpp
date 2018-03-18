@@ -121,7 +121,6 @@ t_bncCore::t_bncCore() : _ephUser(false) {
   qRegisterMetaType<t_vTec>                 ("t_vTec");
 
   _earthworm = new EWconn(this);
-  _earthworm->setPid(_pid);
 }
 
 // Destructor
@@ -694,6 +693,32 @@ void t_bncCore::slotNewTec(t_vTec vTec) {
       }
     }
   }
+}
+
+void t_bncCore::slotConnectEW(bool status)
+{
+    _earthworm->setConfig(_ewConfig);
+    _earthworm->setPid(_pid);
+    if(status && !_earthworm->isConn()){
+        if(_earthworm->connectToEw()!=-1){
+            connect(this,SIGNAL(newPosition(QByteArray,bncTime,QVector<double>)),
+                    _earthworm,SLOT(processState(QByteArray,bncTime,QVector<double>)));
+            qDebug() << "Connected Succesfully";
+        }
+        else{
+            qDebug() << "Error connecting to EW";
+        }
+    }
+    else if (!status && _earthworm->isConn()){
+        disconnect(BNC_CORE,SIGNAL(newPosition(QByteArray,bncTime,QVector<double>)),
+                   _earthworm,SLOT(processState(QByteArray,bncTime,QVector<double>)));
+        _earthworm->disconnectFromEw();
+    }
+}
+
+void t_bncCore::slotSetEWConfig(QString config)
+{
+    _ewConfig = config;
 }
 
 //

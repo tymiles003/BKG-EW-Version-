@@ -24,7 +24,7 @@ bool EWconn::isConn()
 int EWconn::get_config(char *configfile)
 {
     int      nfiles;
-    char     init[8];
+    char     init[6];
 
     /* Open the main configuration file
      * ********************************/
@@ -80,7 +80,7 @@ int EWconn::get_config(char *configfile)
                     }
                     mod_id = gcfg_module_idnum;
                 }
-                init[2] = 1;
+                init[0] = 1;
             }
 
             else if ( k_its( "RingName" ) )
@@ -97,19 +97,19 @@ int EWconn::get_config(char *configfile)
                     }
                     ring_id = gcfg_ring_key;
                 }
-                init[3] = 1;
+                init[1] = 1;
             }
 
             else if ( k_its( "HeartbeatInt" ) )
             {
                 heartbeat = k_int();
-                init[4] = 1;
+                init[2] = 1;
             }
 
             else if ( k_its( "SampRate" ) )
             {
                 sampler = k_int();
-                init[5] = 1;
+                init[3] = 1;
             }
 
             else if ( k_its( "SubX" ) )
@@ -131,20 +131,20 @@ int EWconn::get_config(char *configfile)
             else if ( k_its( "LogFile" ) )
             {
                 logf = k_int();
-                init[6] = 1;
+                init[4] = 1;
             }
 
             /* Optional Commands */
             else if ( k_its( "Network" ) )
             {
                 netID = QString(k_str());
-                init[7] = 1;
+                init[5] = 1;
             }
 
             else if (k_its( "Debug" ) )
             {
                 debug = k_int();
-                init[8] = 1;
+                init[6] = 1;
             }
             else if (k_its( "InjectVel" ) )
             {
@@ -172,23 +172,20 @@ int EWconn::get_config(char *configfile)
     /* After all files are closed, check flags for missed required commands
            ***********************************************************/
     int nmiss = 0;
-    for ( int i = 0; i < 8; i++ )
+    for ( int i = 0; i < 6; i++ )
         if ( !init[i] )
             nmiss++;
 
     if ( nmiss > 0 )
     {
         qDebug() << "ERROR, no ";
-        if ( !init[0] ) qDebug() <<"<TcpAddr>" ;
-        if ( !init[1] ) qDebug() <<"<TcpPort>" ;
-        if ( !init[2] ) qDebug() <<"<ModuleId>";
-        if ( !init[3] ) qDebug() <<"<RingName>";
-        if ( !init[4] ) qDebug() <<"<HeartbeatInt>";
-        if ( !init[5] ) qDebug() <<"<SampRate>";
-        if ( !init[6] ) qDebug() <<"<LogFile> ";
-        if ( !init[7] ) qDebug() <<"<StaID> ";
-        if ( !init[8] ) qDebug() <<"<Network> ";
-        if ( !init[9] ) qDebug() <<"<Debug> ";
+        if ( !init[0] ) qDebug() <<"<ModuleId>";
+        if ( !init[1] ) qDebug() <<"<RingName>";
+        if ( !init[2] ) qDebug() <<"<HeartbeatInt>";
+        if ( !init[3] ) qDebug() <<"<SampRate>";
+        if ( !init[4] ) qDebug() <<"<LogFile> ";
+        if ( !init[5] ) qDebug() <<"<Network> ";
+        if ( !init[6] ) qDebug() <<"<Debug> ";
         qDebug() <<"configuration detected";
         return -1;
     }
@@ -205,17 +202,21 @@ void EWconn::appendlog(QString status)
 /* Process GPS State            */
 void EWconn::processState(QByteArray staID , bncTime time, QVector<double> xx)
 {
-    double xRover, yRover, zRover, N, E, U;
-    xRover = xx.at(0);
-    yRover = xx.at(1);
-    zRover = xx.at(2);
-    N = xx.at(3);
-    E = xx.at(4);
-    U = xx.at(5);
     if (debug == 2){
+        double xRover, yRover, zRover, N, E, U;
+        xRover = xx.at(0);
+        yRover = xx.at(1);
+        zRover = xx.at(2);
+        N = xx.at(3);
+        E = xx.at(4);
+        U = xx.at(5);
         qDebug() << "Hello There";
+        qDebug() << staID ;
+        qDebug() << xRover << yRover << zRover;
+        qDebug() << N << E << U;
+
     }
-    //createTracePacket(array, time, vector);
+    createTracePacket(staID, time, xx);
 }
 
 /* Send Heartbeat Packet        */
@@ -230,15 +231,25 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
     for (int i=0; i < 3; i++){
         static int cd;
         char* chan;
+        double xval, yval, zval;
+        double nval, eval, uval;
+        QString station(staID);
+        station.resize(4);
 
         if (i == 0){
             chan  = "GPX";
+            xval  = myvector.at(0);
+            nval  = myvector.at(3);
         }
         if (i == 1){
             chan  = "GPY";
+            yval  = myvector.at(1);
+            eval  = myvector.at(4);
         }
         if (i == 2){
             chan  = "GPZ";
+            zval = myvector.at(2);
+            uval = myvector.at(5);
         }
 
         TracePacket ew_trace_pkt;
@@ -246,7 +257,6 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         logo.type = TypeTraceBuf2;
         logo.mod = mod_id;
         logo.instid = InstId;
-        QString station = staID;
         memset(&ew_trace_pkt,0,sizeof(ew_trace_pkt));
         strncpy(ew_trace_pkt.trh2.sta,station.toLocal8Bit().data(), TRACE2_STA_LEN-1);
         ew_trace_pkt.trh2.version[0]=TRACE2_VERSION0;
@@ -271,38 +281,46 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         strncpy(ew_trace_pkt.trh2.loc,"--", TRACE2_LOC_LEN-1);
         ew_trace_pkt.trh2.loc[TRACE2_LOC_LEN-1] = '\0';
 
-        //double starttime = (double) mystate.last_gps_time.toSecsSinceEpoch();
+        unsigned int Day,Month,Year;
+        unsigned int Hour, Minute;
+        double Seconds;
+        mytime.civil_date(Year,Month,Day);
+        mytime.civil_time(Hour,Minute,Seconds);
+        int second = (int) Seconds;
+        int milli  =  (int) ((Seconds - second) * 1000);
+        QDateTime timeofobs;
+        timeofobs.setTime(QTime(Hour,Minute,second,milli));
+        timeofobs.setDate(QDate(Year,Month,Day));
+
+        double starttime = (double) timeofobs.toTime_t();
 
         /* calculate and enter start-timestamp for packet */
-        //ew_trace_pkt.trh2.starttime = starttime;
+        ew_trace_pkt.trh2.starttime = starttime;
 
         /* endtime is the time of last sample in this packet, not the time *
          * of the first sample in the next packet */
         ew_trace_pkt.trh2.endtime = ew_trace_pkt.trh2.starttime + (double)(ew_trace_pkt.trh2.nsamp - 1) / ew_trace_pkt.trh2.samprate;
 
         if (i == 0){
-            //double X = mystate.ECEF.X;
+            double X = xval;
             if(Xcor)
-                ;
-                //X -= SubX;
+                X = nval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            //memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
         if (i == 1){
-            //double Y = mystate.ECEF.Y;
+            double Y = yval;
             if(Ycor)
-                ;
-                //Y -= SubY;
+                Y = eval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            //memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
         if (i == 2){
-            //double Z = mystate.ECEF.Z;
+            double Z = zval;
             if(Zcor)
-                ;
-                //Z -= SubZ;
+                Z = uval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            //memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Z, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Z, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
 
         sleep_ew(10);/* Take a short nap so we don't flood the transport ring */
@@ -444,8 +462,10 @@ int EWconn::disconnectFromEw(){
     if (connected){
         tport_detach( &region );
         appendlog("Successful Disconnection");
+        connected = false;
         return 0;
     } else {
+        connected = false;
         appendlog("Not Connected");
         return 0;
     }

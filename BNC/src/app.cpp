@@ -24,6 +24,7 @@ using namespace std;
 // Constructor
 ////////////////////////////////////////////////////////////////////////////
 t_app::t_app(int& argc, char* argv[], bool GUIenabled) : QApplication(argc, argv, GUIenabled) {
+    BNC_CORE->setPid(this->applicationPid());
 }
 
 // Destructor
@@ -38,7 +39,6 @@ bool t_app::event(QEvent* ev) {
   if (ev->type() == QEvent::FileOpen) {  // currently happens on Mac only
     QString fileName = static_cast<QFileOpenEvent*>(ev)->file();
     BNC_CORE->setConfFileName(fileName);
-    BNC_CORE->setPid(this->applicationPid());
     return true;
   }
     
