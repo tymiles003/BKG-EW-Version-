@@ -198,6 +198,8 @@ void bncSettings::reRead() {
     // Upload (eph)
     setValue_p("uploadEphMountpointsOut","");
     setValue_p("uploadSamplRtcmEph", "0");
+    // EW
+    setValue_p("ewConfigFile",           "");
   }
 #ifdef GNSSCENTER_PLUGIN
   settings.endGroup();

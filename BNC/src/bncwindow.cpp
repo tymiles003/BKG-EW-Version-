@@ -1283,6 +1283,7 @@ bncWindow::bncWindow() {
   QGridLayout* ewLayout = new QGridLayout;
   ewLayout->setColumnMinimumWidth(0,13*ww);
   _proxyPortLineEdit->setMaximumWidth(9*ww);
+  _earthwormConfig->setText(settings.value("ewConfigFile").toString());
 
   ewLayout->addWidget(new QLabel("Settings for earthworm configuration     "),0, 0, 1, 50);
   ewLayout->addWidget(new QLabel("Earthworm Configuration File"),             1, 0);
@@ -2074,6 +2075,8 @@ void bncWindow::saveOptions() {
     settings.setValue("uploadEphMountpointsOut", "");
   }
   settings.setValue("uploadSamplRtcmEph", _uploadSamplRtcmEphSpinBox->value());
+
+  settings.setValue("ewConfigFile", _earthwormConfig->text());
 
   if (_caster) {
     _caster->readMountPoints();
