@@ -119,6 +119,9 @@ t_bncCore::t_bncCore() : _ephUser(false) {
   qRegisterMetaType<QList<t_satCodeBias> >  ("QList<t_satCodeBias>");
   qRegisterMetaType<QList<t_satPhaseBias> > ("QList<t_satPhaseBias>");
   qRegisterMetaType<t_vTec>                 ("t_vTec");
+
+  _earthworm = new EWconn(this);
+  _earthworm->setPid(pid_t);
 }
 
 // Destructor
