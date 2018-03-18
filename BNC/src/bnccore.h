@@ -29,6 +29,7 @@
 #include "bnccaster.h"
 #include "bncrawfile.h"
 #include "bncephuser.h"
+#include "ewconn.h"
 
 class bncComb;
 class bncTableItem;
@@ -155,6 +156,7 @@ friend class bncSettings;
   mutable QMutex         _mutexDateAndTimeGPS;
   BNC_PPP::t_pppMain*    _pppMain;
   bncEphUser             _ephUser;
+  EWconn*                _earthworm;
 };
 
 #define BNC_CORE (t_bncCore::instance())
