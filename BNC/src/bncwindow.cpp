@@ -644,7 +644,7 @@ bncWindow::bncWindow() {
   }
   // Earthworm Configuration
   // ---------------------------
-  _earthwormConfig = new QTextEdit("bnc2ew.d");
+  _earthwormConfig = new QLineEdit("bnc2ew.d");
   _earthwormRun    = new QCheckBox("Check for enableing.");
 
   // Canvas with Editable Fields

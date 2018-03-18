@@ -230,7 +230,7 @@ class bncWindow : public QMainWindow {
     QSpinBox*      _uploadSamplRtcmEphSpinBox;
 
     QCheckBox*      _earthwormRun;
-    QTextEdit*      _earthwormConfig;
+    QLineEdit*      _earthwormConfig;
 
     bncCaster*          _caster;
     bncEphUploadCaster* _casterEph;
