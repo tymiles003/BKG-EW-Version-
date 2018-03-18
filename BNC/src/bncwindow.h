@@ -229,6 +229,9 @@ class bncWindow : public QMainWindow {
     QTableWidget*  _uploadEphTable;
     QSpinBox*      _uploadSamplRtcmEphSpinBox;
 
+    QCheckBox*      _earthwormRun;
+    QTextEdit*      _earthwormConfig;
+
     bncCaster*          _caster;
     bncEphUploadCaster* _casterEph;
 

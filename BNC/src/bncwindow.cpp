@@ -642,6 +642,10 @@ bncWindow::bncWindow() {
   else {
     enableWidget(false, _uploadSamplRtcmEphSpinBox);
   }
+  // Earthworm Configuration
+  // ---------------------------
+  _earthwormConfig = new QTextEdit("bnc2ew.d");
+  _earthwormRun    = new QCheckBox("Check for enableing.")
 
   // Canvas with Editable Fields
   // ---------------------------
@@ -669,6 +673,7 @@ bncWindow::bncWindow() {
   QWidget* cmbgroup = new QWidget();
   QWidget* uploadgroup = new QWidget();
   QWidget* uploadEphgroup = new QWidget();
+  QWidget* ewconfiggroup = new QWidget();
   _aogroup->addTab(pgroup,tr("Network"));
   _aogroup->addTab(ggroup,tr("General"));
   _aogroup->addTab(ogroup,tr("RINEX Observations"));
@@ -687,6 +692,7 @@ bncWindow::bncWindow() {
   _aogroup->addTab(cmbgroup,tr("Combine Corrections"));
   _aogroup->addTab(uploadgroup,tr("Upload Corrections"));
   _aogroup->addTab(uploadEphgroup,tr("Upload Ephemeris"));
+  _aogroup->addTab(ewconfiggroup,tr("Earthworm Configuration"));
 
   // Log Tab
   // -------
@@ -1271,6 +1277,22 @@ bncWindow::bncWindow() {
   uploadLayoutEph->addLayout(uploadHlpLayoutEph);
 
   uploadEphgroup->setLayout(uploadLayoutEph);
+
+  // Earthworm Config Tab
+  // ----------------------------
+  QGridLayout* ewLayout = new QGridLayout;
+  ewLayout->setColumnMinimumWidth(0,13*ww);
+  _proxyPortLineEdit->setMaximumWidth(9*ww);
+
+  ewLayout->addWidget(new QLabel("Settings for earthworm configuration     "),0, 0, 1, 50);
+  ewLayout->addWidget(new QLabel("Earthworm Configuration File",              1, 0);
+  ewLayout->addWidget(_earthwormConfig,                                       1, 1, 1,10);
+  ewLayout->addWidget(new QLabel("Run Earthworm Module?"),                    2, 0);
+  ewLayout->addWidget(_earthwormRun,                                          4, 1, 1,10);
+  ewLayout->addWidget(new QLabel(""),                                         5, 1);
+  ewLayout->setRowStretch(6, 999);
+
+  ewconfiggroup->setLayout(ewLayout);
 
 
   // Main Layout
