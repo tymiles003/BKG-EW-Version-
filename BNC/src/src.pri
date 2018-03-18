@@ -69,7 +69,7 @@ HEADERS = bnchelp.html bncgetthread.h    bncwindow.h   bnctabledlg.h  \
           rinex/graphwin.h         rinex/polarplot.h                  \
           rinex/availplot.h        rinex/eleplot.h                    \
           rinex/dopplot.h          orbComp/sp3Comp.h                  \
-          combination/bnccomb.h
+          combination/bnccomb.h    ewconn.h
 
 HEADERS       += serial/qextserialbase.h serial/qextserialport.h
 unix:HEADERS  += serial/posix_qextserialport.h
@@ -106,7 +106,7 @@ SOURCES = bncgetthread.cpp  bncwindow.cpp bnctabledlg.cpp             \
           rinex/graphwin.cpp       rinex/polarplot.cpp                \
           rinex/availplot.cpp      rinex/eleplot.cpp                  \
           rinex/dopplot.cpp        orbComp/sp3Comp.cpp                \
-          combination/bnccomb.cpp
+          combination/bnccomb.cpp  ewconn.cpp
 
 SOURCES       += serial/qextserialbase.cpp serial/qextserialport.cpp
 unix:SOURCES  += serial/posix_qextserialport.cpp
