@@ -15,8 +15,6 @@ Network         PR              # Network name for EW msg headers
 Debug         2                 # debug level: 0 or commented out for no debug
                                 # logging; 1 - 4 for increasing verbosity
                                 # default: no debug output
-                                
-InjectVel                       # inject GPS Velocity
 
 SampRate       1                # GPS Samplerate in Hz
 
