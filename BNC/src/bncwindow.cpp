@@ -645,7 +645,7 @@ bncWindow::bncWindow() {
   // Earthworm Configuration
   // ---------------------------
   _earthwormConfig = new QTextEdit("bnc2ew.d");
-  _earthwormRun    = new QCheckBox("Check for enableing.")
+  _earthwormRun    = new QCheckBox("Check for enableing.");
 
   // Canvas with Editable Fields
   // ---------------------------
@@ -1285,7 +1285,7 @@ bncWindow::bncWindow() {
   _proxyPortLineEdit->setMaximumWidth(9*ww);
 
   ewLayout->addWidget(new QLabel("Settings for earthworm configuration     "),0, 0, 1, 50);
-  ewLayout->addWidget(new QLabel("Earthworm Configuration File",              1, 0);
+  ewLayout->addWidget(new QLabel("Earthworm Configuration File"),             1, 0);
   ewLayout->addWidget(_earthwormConfig,                                       1, 1, 1,10);
   ewLayout->addWidget(new QLabel("Run Earthworm Module?"),                    2, 0);
   ewLayout->addWidget(_earthwormRun,                                          4, 1, 1,10);
