@@ -121,7 +121,7 @@ t_bncCore::t_bncCore() : _ephUser(false) {
   qRegisterMetaType<t_vTec>                 ("t_vTec");
 
   _earthworm = new EWconn(this);
-  _earthworm->setPid(pid_t);
+  _earthworm->setPid(_pid);
 }
 
 // Destructor
@@ -708,6 +708,11 @@ void t_bncCore::setConfFileName(const QString& confFileName) {
   else {
     _confFileName = confFileName;
   }
+}
+
+void t_bncCore::setPid(qint64 mypid)
+{
+    _pid = mypid;
 }
 
 // Raw Output

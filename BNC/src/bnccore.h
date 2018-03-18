@@ -57,6 +57,7 @@ friend class bncSettings;
   QDateTime         dateAndTimeGPS() const;
   void              setDateAndTimeGPS(QDateTime dateTime);
   void              setConfFileName(const QString& confFileName);
+  void              setPid(qint64 mypid);
   QString           confFileName() const {return _confFileName;}
   void              writeRawData(const QByteArray& data, const QByteArray& staID,
                                 const QByteArray& format);
@@ -156,6 +157,7 @@ friend class bncSettings;
   mutable QMutex         _mutexDateAndTimeGPS;
   BNC_PPP::t_pppMain*    _pppMain;
   bncEphUser             _ephUser;
+  qint64                 _pid;
   EWconn*                _earthworm;
 };
 
