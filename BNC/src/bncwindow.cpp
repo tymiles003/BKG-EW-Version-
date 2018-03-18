@@ -1290,7 +1290,7 @@ bncWindow::bncWindow() {
   ewLayout->addWidget(new QLabel("Run Earthworm Module?"),                    2, 0);
   ewLayout->addWidget(_earthwormRun,                                          2, 1, 1,10);
   ewLayout->addWidget(new QLabel(""),                                         3, 1);
-  ewLayout->setRowStretch(6, 999);
+  ewLayout->setRowStretch(4, 999);
 
   ewconfiggroup->setLayout(ewLayout);
 
