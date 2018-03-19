@@ -261,7 +261,7 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         strncpy(ew_trace_pkt.trh2.sta,station.toLocal8Bit().data(), TRACE2_STA_LEN-1);
         ew_trace_pkt.trh2.version[0]=TRACE2_VERSION0;
         ew_trace_pkt.trh2.version[1]=TRACE2_VERSION1;
-        strcpy(ew_trace_pkt.trh2.datatype,"i4");   /* enter data type (Intel ints) */
+        strcpy(ew_trace_pkt.trh2.datatype,"f8");   /* enter data type (Intel double) */
         ew_trace_pkt.trh2.samprate = (double) sampler; /* enter GPS sample rate */
         ew_trace_pkt.trh2.nsamp = sampler;   /* enter GPS number of samples rate */
 
@@ -306,21 +306,21 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
             if(Xcor)
                 X = nval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(double));
         }
         if (i == 1){
             double Y = yval;
             if(Ycor)
                 Y = eval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(double));
         }
         if (i == 2){
             double Z = zval;
             if(Zcor)
                 Z = uval;
             /* copy payload of 32-bit ints into trace buffer (after header) */
-            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Z, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
+            memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Z, ew_trace_pkt.trh2.nsamp*sizeof(double));
         }
 
         sleep_ew(10);/* Take a short nap so we don't flood the transport ring */
