@@ -347,7 +347,7 @@ void EWconn::createHBPacket(unsigned char type,short code, char* message )
     time( &msgTime );
 
     /*  Build & process the message based on the type                     */
-    if ( heartbeat == type )
+    if ( TypeHeartBeat == type )
     {
       sprintf( outMsg, "%ld %d\n", (long) msgTime,(int) pid );
 
