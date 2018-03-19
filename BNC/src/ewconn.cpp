@@ -302,23 +302,26 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         ew_trace_pkt.trh2.endtime = ew_trace_pkt.trh2.starttime + (double)(ew_trace_pkt.trh2.nsamp - 1) / ew_trace_pkt.trh2.samprate;
 
         if (i == 0){
-            double X = xval;
+            double tempX = xval * 1000; // Convert from m to mm
             if(Xcor)
-                X = nval;
+                tempX = nval * 1000; // Convert from m to mm
+            int32_t X = (int32_t) tempX;
             /* copy payload of 32-bit ints into trace buffer (after header) */
             memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
         if (i == 1){
-            double Y = yval;
+            double tempY = yval* 1000; // Convert from m to mm
             if(Ycor)
-                Y = eval;
+                tempY = eval * 1000; // Convert from m to mm
+            int32_t Y = (int32_t) tempY;
             /* copy payload of 32-bit ints into trace buffer (after header) */
             memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
         if (i == 2){
-            double Z = zval;
+            double tempZ = zval * 1000; // Convert from m to mm
             if(Zcor)
-                Z = uval;
+                tempZ = uval * 1000; // Convert from m to mm
+            int32_t Z = (int32_t) Z;
             /* copy payload of 32-bit ints into trace buffer (after header) */
             memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Z, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
