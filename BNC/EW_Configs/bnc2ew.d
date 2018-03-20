@@ -18,6 +18,6 @@ Debug         2                 # debug level: 0 or commented out for no debug
 
 SampRate       1                # GPS Samplerate in Hz
 
-SubX 1                          # If you prefer the N
-SubY 1                          # If you prefer the E
-SubZ 1                          # If you prefer the U
+SubX                            # If you prefer the N
+SubY                            # If you prefer the E
+SubZ                            # If you prefer the U
