@@ -114,18 +114,18 @@ int EWconn::get_config(char *configfile)
 
             else if ( k_its( "SubX" ) )
             {
-                SubX = k_int();
+                //SubX = k_int();
                 Xcor = true;
             }
             else if ( k_its( "SubY" ) )
             {
-                SubY = k_int();
+                //SubY = k_int();
                 Ycor = true;
             }
             else if ( k_its( "SubZ" ) )
             {
-                SubZ = k_int();
-                Ycor = true;
+                //SubZ = k_int();
+                Zcor = true;
             }
 
             else if ( k_its( "LogFile" ) )

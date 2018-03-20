@@ -48,7 +48,7 @@ private:
     QString netID;          // Network ID
     qint32 debug;           // Debug Level
     qint32 sampler;         // Sample Rate
-    double SubX,SubY,SubZ;  // Correction or 0-level
+    //double SubX,SubY,SubZ;  // Correction or 0-level
     bool   Xcor,Ycor,Zcor;  // Correction flag
 
     SHM_INFO   region;      /* The shared memory region   */
