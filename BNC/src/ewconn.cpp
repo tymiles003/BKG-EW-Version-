@@ -292,7 +292,12 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
         timeofobs.setTimeSpec(Qt::TimeSpec::UTC); // THIS ONE IS IMPORTANT
         timeofobs.setTime(QTime(Hour,Minute,second,milli));
         timeofobs.setDate(QDate(Year,Month,Day));
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
+        double starttime = (double) timeofobs.toSecsSinceEpoch();
+#else
         double starttime = (double) timeofobs.toTime_t();
+#endif
 
         /* calculate and enter start-timestamp for packet */
         ew_trace_pkt.trh2.starttime = starttime;
@@ -305,7 +310,7 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
             double tempX = xval;
             if(Xcor)
                 tempX = nval;
-            int32_t X = (int32_t) (tempX* 1000);  // Convert from m to mm
+            int32_t X = (int32_t) (tempX * 1000);  // Convert from m to mm
             /* copy payload of 32-bit ints into trace buffer (after header) */
             memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&X , ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
@@ -313,7 +318,7 @@ void EWconn::createTracePacket(QByteArray staID, bncTime mytime, QVector<double>
             double tempY = yval;
             if(Ycor)
                 tempY = eval;
-            int32_t Y = (int32_t) (tempY* 1000); // Convert from m to mm
+            int32_t Y = (int32_t) (tempY * 1000); // Convert from m to mm
             /* copy payload of 32-bit ints into trace buffer (after header) */
             memcpy(&ew_trace_pkt.msg[sizeof(TRACE2_HEADER)],&Y, ew_trace_pkt.trh2.nsamp*sizeof(int32_t));
         }
